@@ -7,20 +7,16 @@ import Problem2 from "../Components/Problem2";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Home></Home>,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
-        element: <Home />,
+        path: "/problem1",
+        element: <Problem1></Problem1>,
       },
       {
-        path: "problem1",
-        element: <Problem1 />,
-      },
-      {
-        path: "problem2",
-        element: <Problem2 />,
+        path: "/problem2",
+        element: <Problem2></Problem2>,
       },
     ],
   },
