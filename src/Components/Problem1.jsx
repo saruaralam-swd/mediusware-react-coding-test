@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import React, { useState } from "react";
 import Button from "./Button";
 
 const Problem1 = () => {
+  const [isTaskStatus, setTaskStatus] = useState(null);
+
   const [storeCart, setStoreCart] = useState(
     JSON.parse(localStorage.getItem("cart")) || []
   );
@@ -12,6 +13,8 @@ const Problem1 = () => {
 
     const name = e.target.name.value;
     const status = e.target.status.value;
+
+    console.log(name, status);
 
     if (!status) {
       return alert("Please Provide work status");
@@ -28,6 +31,16 @@ const Problem1 = () => {
   };
 
   const tasks = JSON.parse(localStorage.getItem("cart"));
+  let allTasks = tasks;
+
+  // console.log(isTaskStatus);
+
+  if (isTaskStatus === "ACTIVE") {
+    allTasks = allTasks.filter((t) => t.status === "Active");
+  }
+  if (isTaskStatus === "COMPLETE") {
+    allTasks = allTasks.filter((t) => t.status === "Complete");
+  }
 
   return (
     <>
@@ -36,7 +49,7 @@ const Problem1 = () => {
 
         <div>
           <h1 className="text-2xl font-semibold text-center my-5">Problem 1</h1>
-          <form onSubmit={handleSubmit} className="space-x-3">
+          <form onSubmit={handleSubmit} className="grid grid-cols-3 gap-3">
             <input
               required
               name="name"
@@ -51,19 +64,30 @@ const Problem1 = () => {
               className="select select-info w-full max-w-xs"
             >
               <option value="">select states</option>
-              <option value="complete">complete</option>
-              <option value="active">active</option>
+              <option value="Active">Active</option>
+              <option value="Complete">Complete</option>
             </select>
 
             <button className="btn btn-primary">Submit</button>
           </form>
 
           <div className="my-5">
-            <button className="btn btn-primary btn-sm rounded-md">All</button>
-            <button className="btn btn-primary btn-sm rounded-md mx-5">
+            <button
+              onClick={(e) => setTaskStatus(e.target.innerText)}
+              className="btn btn-primary btn-sm rounded-md"
+            >
+              All
+            </button>
+            <button
+              onClick={(e) => setTaskStatus(e.target.innerText)}
+              className="btn btn-primary btn-sm rounded-md mx-5"
+            >
               Active
             </button>
-            <button className="btn btn-primary btn-sm rounded-md">
+            <button
+              onClick={(e) => setTaskStatus(e.target.innerText)}
+              className="btn btn-primary btn-sm rounded-md"
+            >
               Complete
             </button>
           </div>
@@ -77,7 +101,7 @@ const Problem1 = () => {
                 </tr>
               </thead>
               <tbody>
-                {tasks?.map((task, i) => (
+                {allTasks?.map((task, i) => (
                   <tr key={i}>
                     <td>{task.name}</td>
                     <td>{task.status}</td>
