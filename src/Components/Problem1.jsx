@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link, Outlet } from "react-router-dom";
+import Button from "./Button";
 
 const Problem1 = () => {
   const [storeCart, setStoreCart] = useState(
@@ -10,7 +12,13 @@ const Problem1 = () => {
 
     const name = e.target.name.value;
     const status = e.target.status.value;
+
+    if (!status) {
+      return alert("Please Provide work status");
+    }
+
     const obj = { name, status };
+    console.log(obj);
 
     const newArray = [...storeCart, obj];
     localStorage.setItem("cart", JSON.stringify(newArray));
@@ -22,53 +30,65 @@ const Problem1 = () => {
   const tasks = JSON.parse(localStorage.getItem("cart"));
 
   return (
-    <div>
-      <h1 className="text-2xl text-center">Problem 1</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          required
-          name="name"
-          type="text"
-          placeholder="Name"
-          className="input input-bordered input-info w-full max-w-xs"
-        />
-        <input
-          required
-          name="status"
-          type="text"
-          placeholder="Status"
-          className="input input-bordered input-info w-full max-w-xs"
-        />
+    <>
+      <div className="max-w-5xl">
+        <Button />
 
-        <button className="btn btn-primary">Submit</button>
-      </form>
+        <div>
+          <h1 className="text-2xl font-semibold text-center my-5">Problem 1</h1>
+          <form onSubmit={handleSubmit} className="space-x-3">
+            <input
+              required
+              name="name"
+              type="text"
+              placeholder="Name"
+              className="input input-bordered input-info w-full max-w-xs"
+            />
 
-      <button className="btn btn-primary btn-sm rounded-md">All</button>
-      <button className="btn btn-primary btn-sm rounded-md">Active</button>
-      <button className="btn btn-primary btn-sm rounded-md">Complete</button>
+            <select
+              name="status"
+              id="status"
+              className="select select-info w-full max-w-xs"
+            >
+              <option value="">select states</option>
+              <option value="complete">complete</option>
+              <option value="active">active</option>
+            </select>
 
-      <div className="overflow-x-auto">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>Serial</th>
-              <th>Name</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task, i) => (
-              <tr key={i}>
-                <th>{i + 1}</th>
-                <td>{task.name}</td>
-                <td>{task.status}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            <button className="btn btn-primary">Submit</button>
+          </form>
+
+          <div className="my-5">
+            <button className="btn btn-primary btn-sm rounded-md">All</button>
+            <button className="btn btn-primary btn-sm rounded-md mx-5">
+              Active
+            </button>
+            <button className="btn btn-primary btn-sm rounded-md">
+              Complete
+            </button>
+          </div>
+
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th className="font-bold text-lg">Name</th>
+                  <th className="font-bold text-lg">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks?.map((task, i) => (
+                  <tr key={i}>
+                    <td>{task.name}</td>
+                    <td>{task.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
